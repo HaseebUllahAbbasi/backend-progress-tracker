@@ -1,10 +1,10 @@
 const userService = require("../service/user.service");
-const catchAsyncError = require("../middleware/middleware");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Controller function to create a new user
 const createUser = catchAsyncError(async (req, res) => {
-  const { username, password } = req.body;
-  const newUser = await userService.createUser(username, password);
+  const { username, password, email } = req.body;
+  const newUser = await userService.createUser(username, password, email);
   res.status(201).json(newUser);
 });
 
@@ -12,6 +12,12 @@ const createUser = catchAsyncError(async (req, res) => {
 const getUserById = catchAsyncError(async (req, res) => {
   const { userId } = req.params;
   const user = await userService.getUserById(userId);
+  res.json(user);
+});
+
+const loginUser = catchAsyncError(async (req, res) => {
+  const { userId, password } = req.body;
+  const user = await userService.loginUser(userId, password);
   res.json(user);
 });
 
@@ -42,4 +48,5 @@ module.exports = {
   getUserByUsername,
   deleteAllUsers,
   deleteUserById,
+  loginUser,
 };

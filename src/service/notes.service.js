@@ -1,5 +1,5 @@
 const Note = require("../model/note.model");
-const catchAsyncError = require("../middleware/middleware");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new note
 const createNote = catchAsyncError(async (userId, heading, items, date) => {

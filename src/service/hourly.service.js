@@ -1,5 +1,5 @@
 const HourlyProgress = require("../model/hour.model");
-const catchAsyncError = require("../middleware/middleware");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new hourly progress entry
 const createHourlyProgress = catchAsyncError(

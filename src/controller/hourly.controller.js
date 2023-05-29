@@ -1,5 +1,5 @@
-const hourlyProgressService = require("../services/hourlyprogress.service");
-const catchAsyncError = require("../middleware/middleware");
+const hourlyProgressService = require("../service/hourly.service");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Controller function to create a new hourly progress entry
 const createHourlyProgress = catchAsyncError(async (req, res) => {

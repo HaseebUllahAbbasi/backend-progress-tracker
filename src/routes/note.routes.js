@@ -1,15 +1,20 @@
 const express = require("express");
-const notesController = require("../controllers/notes.controller");
+const NoteController = require("../controller/notes.controller");
 
 const router = express.Router();
 
-// Route to create a new note
-router.post("/notes", notesController.createNote);
+// Route for creating a new note
+router.post("/", NoteController.createNote);
 
-// Route to get notes for a user
-router.get("/notes/user/:userId", notesController.getNotesByUser);
+// Route for getting all notes
+router.get("/", NoteController.getNotesByUser);
 
-// Route to delete all notes for a user
-router.delete("/notes/user/:userId", notesController.deleteNotesByUser);
+// Route for getting a single note
+// router.get("/:noteId", NoteController.);
 
+// Route for updating a note
+// router.put("/:noteId", NoteController.updateNote);
+
+// Route for deleting a note
+// router.delete("/:noteId", NoteController.deleteNote);
 module.exports = router;

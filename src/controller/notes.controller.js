@@ -1,5 +1,5 @@
 const notesService = require("../service/notes.service");
-const catchAsyncError = require("../middleware/middleware");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Controller function to create a new note
 const createNote = catchAsyncError(async (req, res) => {

@@ -1,5 +1,5 @@
-const User = require("../model/user");
-const catchAsyncError = require("../middleware/middleware");
+const User = require("../model/user.model");
+const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new user
 const createUser = catchAsyncError(async (username, password) => {
@@ -17,6 +17,11 @@ const getUserById = catchAsyncError(async (userId) => {
 // Function to get user by username
 const getUserByUsername = catchAsyncError(async (username) => {
   const user = await User.findOne({ username });
+  return user;
+});
+
+const loginUser = catchAsyncError(async (username) => {
+  const user = await User.findOne({ username, password });
   return user;
 });
 
@@ -41,4 +46,5 @@ module.exports = {
   getUserByUsername,
   deleteAllUsers,
   deleteUserById,
+  loginUser,
 };
