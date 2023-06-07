@@ -43,14 +43,22 @@ io.on("connection", (socket) => {
     // console.log("data on login", data);
   });
 
-  // Handle events here...
-  socket.on("data-update", (updatedData) => {
-    // console.log(updatedData);
-    // Process the updated data
-    // You can store it in a database, update the server's data, or take any other action
+  socket.on("hourly-user-update", async (userData) => {
+    const { userId } = userData;
+    const data = await getHourlyProgressByUser(userId);
+    // console.log(userData,  );
 
+    io.emit("get-hourly-user", data);
+  });
+  // Handle events here...
+  socket.on("data-update", async (userData) => {
     // Send the updated data to all connected clients
-    io.emit("data-update", updatedData);
+    const { userId } = userData;
+
+    const data = await getHourlyProgressByUser(userId);
+    // console.log(userData,  );
+
+    io.emit("get-hourly-user", data);
   });
 
   socket.on("disconnect", () => {
@@ -59,6 +67,7 @@ io.on("connection", (socket) => {
 });
 // Error middleware
 const errorMiddleware = require("./middleware/middleware");
+const { getHourlyProgressByUser } = require("./service/hourly.service");
 app.use(errorMiddleware);
 
 // Start the server
