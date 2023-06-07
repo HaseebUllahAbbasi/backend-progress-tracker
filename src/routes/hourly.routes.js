@@ -14,6 +14,7 @@ router.get(
   "/user/:userId/date/:date",
   hourlyProgressController.getHourlyProgressByUserAndDate
 );
+router.delete("/:id", hourlyProgressController.deleteHourlyProgress);
 
 // Route to delete all hourly progress entries for a user
 router.delete(

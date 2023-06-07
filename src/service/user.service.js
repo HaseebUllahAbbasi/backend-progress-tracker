@@ -2,8 +2,8 @@ const User = require("../model/user.model");
 const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new user
-const createUser = catchAsyncError(async (username, password) => {
-  const user = new User({ username, password });
+const createUser = catchAsyncError(async (username, password, email) => {
+  const user = new User({ username, password, email });
   const newUser = await user.save();
   return newUser;
 });
@@ -20,7 +20,7 @@ const getUserByUsername = catchAsyncError(async (username) => {
   return user;
 });
 
-const loginUser = catchAsyncError(async (username) => {
+const loginUser = catchAsyncError(async (username, password) => {
   const user = await User.findOne({ username, password });
   return user;
 });

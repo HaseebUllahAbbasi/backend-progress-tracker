@@ -3,15 +3,14 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new hourly progress entry
 const createHourlyProgress = catchAsyncError(
-  async (userId, timestamp, description) => {
-    const hourlyProgress = new HourlyProgress({
+  async ({ userId, timestamp, date, description }) => {
+    const data = await HourlyProgress.create({
       user: userId,
       timestamp,
       date,
       description,
     });
-    const newHourlyProgress = await hourlyProgress.save();
-    return newHourlyProgress;
+    return data;
   }
 );
 
@@ -35,6 +34,10 @@ const deleteHourlyProgressByUser = catchAsyncError(async (userId) => {
     message: "All hourly progress entries for the user have been deleted.",
   };
 });
+const deleteHourlyProgress = catchAsyncError(async (id) => {
+  return await HourlyProgress.findByIdAndDelete(id);
+});
+
 const deleteHourlyProgressAll = catchAsyncError(async () => {
   await HourlyProgress.deleteMany({});
   return {
@@ -49,4 +52,5 @@ module.exports = {
   deleteHourlyProgressByUser,
   getHourlyProgressByUserAndDate,
   deleteHourlyProgressAll,
+  deleteHourlyProgress,
 };
