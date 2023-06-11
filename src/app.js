@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
   // Handle events here...
   socket.on("data-update", async (userData) => {
     // Send the updated data to all connected clients
-    const { userId } = userData;
+    const { userId, date } = userData;
 
     const data = await getHourlyProgressByUser(userId);
     // console.log(userData,  );

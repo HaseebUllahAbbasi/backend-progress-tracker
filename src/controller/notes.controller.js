@@ -3,8 +3,13 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Controller function to create a new note
 const createNote = catchAsyncError(async (req, res) => {
-  const { userId, heading, items, date } = req.body;
-  const newNote = await notesService.createNote(userId, heading, items, date);
+  const { userId, heading, items, color } = req.body;
+  const newNote = await notesService.createNote({
+    userId,
+    heading,
+    items,
+    color,
+  });
   res.status(201).json(newNote);
 });
 

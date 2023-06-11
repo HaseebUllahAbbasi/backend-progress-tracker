@@ -2,16 +2,18 @@ const Note = require("../model/note.model");
 const catchAsyncError = require("../middleware/catchAsyncError");
 
 // Function to create a new note
-const createNote = catchAsyncError(async (userId, heading, items, date) => {
-  const note = new Note({
-    user: userId,
-    heading,
-    items,
-    date,
-  });
-  const newNote = await note.save();
-  return newNote;
-});
+const createNote = catchAsyncError(
+  async ({ userId, heading, items, color }) => {
+    const note = new Note({
+      user: userId,
+      heading,
+      items,
+      color,
+    });
+    const newNote = await note.save();
+    return newNote;
+  }
+);
 
 // Function to get notes for a user
 const getNotesByUser = catchAsyncError(async (userId) => {
