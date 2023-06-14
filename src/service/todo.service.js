@@ -1,9 +1,10 @@
 const Todo = require("../model/Todo.model");
 
 // Create a new to-do item
-const createTodo = async (title) => {
+const createTodo = async (title, user) => {
   const todo = new Todo({
     title,
+    user,
   });
   await todo.save();
   return todo;
@@ -12,6 +13,10 @@ const createTodo = async (title) => {
 // Get all to-do items
 const getAllTodos = async () => {
   const todos = await Todo.find();
+  return todos;
+};
+const getAllTodosByUser = async (user) => {
+  const todos = await Todo.find({ user });
   return todos;
 };
 
@@ -23,6 +28,7 @@ const getTodoById = async (id) => {
 
 // Update a to-do item
 const updateTodo = async (id, status) => {
+  console.log(status, typeof status);
   const todo = await Todo.findByIdAndUpdate(
     id,
     { $set: { completed: status } },
@@ -42,4 +48,5 @@ module.exports = {
   getTodoById,
   updateTodo,
   deleteTodo,
+  getAllTodosByUser,
 };

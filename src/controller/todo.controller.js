@@ -2,8 +2,8 @@ const TodoService = require("../service/todo.service");
 
 // Controller function to create a new to-do item
 const createTodo = async (req, res) => {
-  const { title, description } = req.body;
-  const newTodo = await TodoService.createTodo(title, description);
+  const { title, user } = req.body;
+  const newTodo = await TodoService.createTodo(title, user);
   res.status(201).json(newTodo);
 };
 
@@ -16,7 +16,7 @@ const getAllTodos = async (req, res) => {
 // Controller function to get a specific to-do item by ID
 const getTodoById = async (req, res) => {
   const { id } = req.params;
-  const todo = await TodoService.getTodoById(id);
+  const todo = await TodoService.getAllTodosByUser(id);
   if (todo) {
     res.json(todo);
   } else {
@@ -27,7 +27,7 @@ const getTodoById = async (req, res) => {
 // Controller function to update a to-do item
 const updateTodo = async (req, res) => {
   const { id } = req.params;
-  const status = req.body;
+  const { status } = req.body;
   const todo = await TodoService.updateTodo(id, status);
   if (todo) {
     res.json(todo);

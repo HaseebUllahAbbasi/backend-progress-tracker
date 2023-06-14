@@ -4,23 +4,27 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { Server } = require("socket.io");
+const errorMiddleware = require("./middleware/middleware");
+const { getHourlyProgressByUser } = require("./service/hourly.service");
+const { getAllTodosByUser } = require("./service/todo.service");
 
 // Import Socket.IO and initialize server
 const serverMain = require("http").createServer(app);
 const io = new Server(serverMain, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5175",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: "*",
+    methods: "*",
+    // origin: ["*"],
+    // origin: ["http://localhost:5173", "http://192.168.100.3:5173/"],
+    // methods: ["*"],
+    // ["GET", "POST", "PUT", "DELETE"],
   },
 });
 
 // Import route files
 const userRoutes = require("./routes/user.routes");
 const noteRoutes = require("./routes/note.routes");
+const todoRoutes = require("./routes/todo.routes");
 const hourlyRoutes = require("./routes/hourly.routes");
 
 app.use(express.static("public"));
@@ -34,13 +38,17 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/hourly", hourlyRoutes);
+app.use("/api/todo", todoRoutes);
 
 // Socket.IO event handling
 io.on("connection", (socket) => {
-  console.log("A client connected");
+  // console.log("A client connected");
 
-  socket.on("login", (data) => {
-    // console.log("data on login", data);
+  socket.on("todo-user-update", async (userData) => {
+    const { userId } = userData;
+    const data = await getAllTodosByUser(userId);
+
+    io.emit("get-todo-user", data);
   });
 
   socket.on("hourly-user-update", async (userData) => {
@@ -50,24 +58,23 @@ io.on("connection", (socket) => {
 
     io.emit("get-hourly-user", data);
   });
-  // Handle events here...
+
+  socket.on("todo-data-update", async (userData) => {
+    const { userId } = userData;
+    const data = await getAllTodosByUser(userId);
+    io.emit("get-todo-user", data);
+  });
   socket.on("data-update", async (userData) => {
-    // Send the updated data to all connected clients
     const { userId, date } = userData;
-
     const data = await getHourlyProgressByUser(userId);
-    // console.log(userData,  );
-
     io.emit("get-hourly-user", data);
   });
 
   socket.on("disconnect", () => {
-    console.log("A client disconnected");
+    // console.log("A client disconnected");
   });
 });
 // Error middleware
-const errorMiddleware = require("./middleware/middleware");
-const { getHourlyProgressByUser } = require("./service/hourly.service");
 app.use(errorMiddleware);
 
 // Start the server
