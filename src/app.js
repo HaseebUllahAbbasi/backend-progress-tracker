@@ -26,6 +26,7 @@ const userRoutes = require("./routes/user.routes");
 const noteRoutes = require("./routes/note.routes");
 const todoRoutes = require("./routes/todo.routes");
 const hourlyRoutes = require("./routes/hourly.routes");
+const testingRoutes = require("./routes/test.routes");
 
 app.use(express.static("public"));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -39,6 +40,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/hourly", hourlyRoutes);
 app.use("/api/todo", todoRoutes);
+app.use("/", testingRoutes);
 
 // Socket.IO event handling
 io.on("connection", (socket) => {
