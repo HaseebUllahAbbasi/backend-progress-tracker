@@ -27,6 +27,7 @@ const noteRoutes = require("./routes/note.routes");
 const todoRoutes = require("./routes/todo.routes");
 const hourlyRoutes = require("./routes/hourly.routes");
 const testingRoutes = require("./routes/test.routes");
+const { getNotesByUser } = require("./service/notes.service");
 
 app.use(express.static("public"));
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -45,6 +46,18 @@ app.use("/", testingRoutes);
 // Socket.IO event handling
 io.on("connection", (socket) => {
   // console.log("A client connected");
+
+  socket.on("notes-user-update", async (userData) => {
+    const { userId } = userData;
+    const data = await getNotesByUser(userId);
+
+    io.emit("get-notes-user", data);
+  });
+  socket.on("notes-data-update", async (userData) => {
+    const { userId } = userData;
+    const data = await getNotesByUser(userId);
+    io.emit("get-todo-user", data);
+  });
 
   socket.on("todo-user-update", async (userData) => {
     const { userId } = userData;
@@ -66,6 +79,7 @@ io.on("connection", (socket) => {
     const data = await getAllTodosByUser(userId);
     io.emit("get-todo-user", data);
   });
+
   socket.on("data-update", async (userData) => {
     const { userId, date } = userData;
     const data = await getHourlyProgressByUser(userId);

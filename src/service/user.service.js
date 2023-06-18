@@ -14,6 +14,13 @@ const getUserById = catchAsyncError(async (userId) => {
   return user;
 });
 
+const storeNotificationData = catchAsyncError(async (expoPushToken, userId) => {
+  const user = await User.findById(userId);
+  user.expoPushToken = expoPushToken;
+  await user.save();
+  return user;
+});
+
 // Function to get user by username
 const getUserByUsername = catchAsyncError(async (username) => {
   const user = await User.findOne({ username });
@@ -42,6 +49,7 @@ const deleteUserById = catchAsyncError(async (userId) => {
 
 module.exports = {
   createUser,
+  storeNotificationData,
   getUserById,
   getUserByUsername,
   deleteAllUsers,

@@ -17,7 +17,9 @@ const getUserById = catchAsyncError(async (req, res) => {
 
 const loginUser = catchAsyncError(async (req, res) => {
   const { username, password } = req.body;
+  console.log(username, password);
   const user = await userService.loginUser(username, password);
+  console.log(user);
   res.json(user);
 });
 
