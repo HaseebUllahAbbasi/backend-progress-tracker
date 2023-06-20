@@ -1,6 +1,15 @@
 const Note = require("../model/note.model");
 const catchAsyncError = require("../middleware/catchAsyncError");
 
+const updateNote = catchAsyncError(
+  async ({ noteId, userId, heading, items, color }) => {
+    const update = await Note.findByIdAndUpdate(noteId, {
+      $set: { color: color, items: items, heading: heading },
+    });
+    return update;
+  }
+);
+
 // Function to create a new note
 const createNote = catchAsyncError(
   async ({ userId, heading, items, color }) => {
@@ -27,10 +36,18 @@ const deleteNotesByUser = catchAsyncError(async (userId) => {
     message: "All notes for the user have been deleted.",
   };
 });
+const deleteNoteById = catchAsyncError(async (noteId) => {
+  console.log(noteId, "deletion");
+  await Note.findByIdAndDelete(noteId);
+  return {
+    message: "notes has been deleted.",
+  };
+});
 
-// Export the notesService module
 module.exports = {
   createNote,
   getNotesByUser,
   deleteNotesByUser,
+  deleteNoteById,
+  updateNote,
 };
