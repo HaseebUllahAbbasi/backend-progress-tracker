@@ -37,7 +37,6 @@ const deleteNotesByUser = catchAsyncError(async (userId) => {
   };
 });
 const deleteNoteById = catchAsyncError(async (noteId) => {
-  console.log(noteId, "deletion");
   await Note.findByIdAndDelete(noteId);
   return {
     message: "notes has been deleted.",

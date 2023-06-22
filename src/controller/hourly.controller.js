@@ -4,7 +4,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 // Controller function to create a new hourly progress entry
 const createHourlyProgress = catchAsyncError(async (req, res) => {
   const { userId, timestamp, date, description } = req.body;
-  console.log(req.body, "req.body");
+  // console.log(req.body, "req.body");
   const newHourlyProgress = await hourlyProgressService.createHourlyProgress({
     userId,
     timestamp,
